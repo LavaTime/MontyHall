@@ -14,7 +14,7 @@ pg.display.init()
 
 class Obj:
     # An class that will create the objects that will be visible on the screen
-    def __init__(self, xpos: int, ypos: int, currenttexture: object, visible: bool) -> object:
+    def __init__(self, xpos: int, ypos: int, currenttexture: object, visible: bool):
         """
 
         Parameters
@@ -37,6 +37,7 @@ class Obj:
         # display the object on the screen on the corresponding positions and texture
         screen.blit(self.texture, (self.x, self.y))
 
+
 # Defining constants
 WIDTH, HEIGHT = (1280, 720)
 SIZE = (WIDTH, HEIGHT)
@@ -52,18 +53,23 @@ pg.display.set_caption("Monty Hall")
 
 # Loading images
 closedDoorImg = pg.image.load("Data/Assets/Images/closedDoor0.jpg")
+openedDoorImg = pg.image.load("Data/Assets/Images/openedDoor0.jpg")
 # resizing the images
 # closedDoorImgSize = closedDoorImg.get_rect().size  NOT NEEDED
 closedDoorImgSize = np.asarray((229, 394))
+openedDoorImgSize = np.asarray((229, 394))
 # print(closedDoorImgSize)
 closedDoorImg = pg.transform.scale(closedDoorImg, closedDoorImgSize)
+openedDoorImg = pg.transform.scale(openedDoorImg, openedDoorImgSize)
 
-door1 = Obj(150, 30, closedDoorImg, True)
-door2 = Obj(550, 30, closedDoorImg, True)
-door3 = Obj(959, 30, closedDoorImg, True)
+door0 = Obj(150, 30, closedDoorImg, True)
+door1 = Obj(550, 30, closedDoorImg, True)
+door2 = Obj(950, 30, closedDoorImg, True)
 chosenDoor = False
 
-doors = random.shuffle
+doors = [False, True, False]
+random.shuffle(doors)
+print(doors)
 
 while True:
     screen.fill(WHITE)
@@ -83,6 +89,7 @@ while True:
             # Check for the position of the mouse relative to the current game state and it's buttons
             if chosenDoor:
                 # TODO: Add actual functionality to the buttons
+                # noinspection PyArgumentList,PyArgumentList
                 if pg.Rect.collidepoint(switchButton, mousePos):
                     print("Switch button pressed!")
                 elif pg.Rect.collidepoint(dontSwitchButton, mousePos):
@@ -91,14 +98,30 @@ while True:
                     pass
             else:
                 # TODO: Write buttons
-                if pg.Rect.collidepoint(door1.Rect, mousePos):
+                # noinspection PyArgumentList,PyArgumentList,PyArgumentList
+                if pg.Rect.collidepoint(door0.Rect, mousePos):
+                    print("door 0 pressed")
+                    if not doors[1]:
+                        door1.texture = openedDoorImg
+                    else:
+                        door2.texture = openedDoorImg
+                elif pg.Rect.collidepoint(door1.Rect, mousePos):
                     print("door 1 pressed")
+                    if not doors[0]:
+                        door0.texture = openedDoorImg
+                    else:
+                        door2.texture = openedDoorImg
                 elif pg.Rect.collidepoint(door2.Rect, mousePos):
                     print("door 2 pressed")
-                elif pg.Rect.collidepoint(door3.Rect, mousePos):
-                    print("door 3 pressed")
+                    if doors[1]:
+                        door1.texture = openedDoorImg
+                    else:
+                        door2.texture = openedDoorImg
                 else:
                     pass
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_SPACE:
+                chosenDoor = not chosenDoor
 
         # check if the event is the X button
         if event.type == pg.QUIT:
