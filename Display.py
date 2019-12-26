@@ -60,22 +60,32 @@ closedDoorImg = pg.transform.scale(closedDoorImg, closedDoorImgSize)
 door1 = Obj(150, 30, closedDoorImg, True)
 door2 = Obj(550, 30, closedDoorImg, True)
 door3 = Obj(959, 30, closedDoorImg, True)
-
+chosenDoor = False
 
 while True:
     screen.fill(WHITE)
     for i in Obj.List:
         i.blit()
     largeText = pg.font.Font('freesansbold.ttf', 115)
-    pg.draw.rect(screen, GREEN, pg.Rect(75, 500, 400, 150))
-    pg.draw.rect(screen, RED, pg.Rect(805, 500, 400, 150))
+    switchButton = pg.Rect(75, 500, 400, 150)
+    dontSwitchButton = pg.Rect(805, 500, 400, 150)
+    pg.draw.rect(screen, GREEN, switchButton)
+    pg.draw.rect(screen, RED, dontSwitchButton)
     pg.display.flip()
     for event in pg.event.get():
         # Check if the mouse is clicked down and it's position
         if event.type == pg.MOUSEBUTTONDOWN:
-            # TODO: Click function
             mousePos = pg.mouse.get_pos()
             # Check for the position of the mouse relative to the current game state and it's buttons
+            if chosenDoor:
+                # TODO: Add actual functionality to the buttons
+                if pg.Rect.collidepoint(switchButton, mousePos):
+                    print("Switch button pressed!")
+                elif pg.Rect.collidepoint(dontSwitchButton, mousePos):
+                    print("Don't switch button pressed")
+                else:
+                    pass
+
 
         # check if the event is the X button
         if event.type == pg.QUIT:
