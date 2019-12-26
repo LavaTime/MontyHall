@@ -100,11 +100,10 @@ while True:
                 # TODO: Add actual functionality to the buttons
                 # noinspection PyArgumentList,PyArgumentList
                 if pg.Rect.collidepoint(switchButton, mousePos):
-                    print("Switch button pressed!")
-                elif pg.Rect.collidepoint(dontSwitchButton, mousePos):
-                    # Check for the clicking on the don't switch button, then check for which door was pressed,
+                    # Check for the clicking on the switch button, then check for which door was pressed,
                     # and then check if the chosen door had the car or the goat
-                    print("Don't switch button pressed")
+                    print("switch button pressed")
+                    print(chosenDoor[1])
                     if chosenDoor[1] == 0:
                         if doors[0]:
                             door0.texture = carDoorImg
@@ -113,8 +112,8 @@ while True:
                         elif doors[2]:
                             door2.texture = carDoorImg
                         else:
-                            print("Error")
-                    if chosenDoor[1] == 1:
+                            print("Error0")
+                    elif chosenDoor[1] == 1:
                         if doors[0]:
                             door0.texture = carDoorImg
                         elif doors[1]:
@@ -122,8 +121,8 @@ while True:
                         elif doors[2]:
                             door2.texture = carDoorImg
                         else:
-                            print("Error")
-                    if chosenDoor[1] == 2:
+                            print("Error1")
+                    elif chosenDoor[1] == 2:
                         if doors[0]:
                             door0.texture = carDoorImg
                         elif doors[1]:
@@ -131,10 +130,43 @@ while True:
                         elif doors[2]:
                             door2.texture = carDoorImg
                         else:
-                            print("Error")
-
+                            print("Error2")
                     else:
-                        print("Error")
+                        print("Errorrrrr")
+                elif pg.Rect.collidepoint(dontSwitchButton, mousePos):
+                    # Check for the clicking on the don't switch button, then check for which door was pressed,
+                    # and then check if the chosen door had the car or the goat
+                    print("Don't switch button pressed")
+                    print(chosenDoor[1])
+                    if chosenDoor[1] == 0:
+                        if doors[0]:
+                            door0.texture = carDoorImg
+                        elif doors[1]:
+                            door1.texture = carDoorImg
+                        elif doors[2]:
+                            door2.texture = carDoorImg
+                        else:
+                            print("Error0")
+                    elif chosenDoor[1] == 1:
+                        if doors[0]:
+                            door0.texture = carDoorImg
+                        elif doors[1]:
+                            door1.texture = carDoorImg
+                        elif doors[2]:
+                            door2.texture = carDoorImg
+                        else:
+                            print("Error1")
+                    elif chosenDoor[1] == 2:
+                        if doors[0]:
+                            door0.texture = carDoorImg
+                        elif doors[1]:
+                            door1.texture = carDoorImg
+                        elif doors[2]:
+                            door2.texture = carDoorImg
+                        else:
+                            print("Error2")
+                    else:
+                        print("Errorrrrr")
                 else:
                     pass
             else:
