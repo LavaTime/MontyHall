@@ -10,6 +10,7 @@ from pygame.locals import *
 # Initiating functions
 pg.init()
 pg.display.init()
+pg.mixer.init()
 
 
 class Obj:
@@ -51,21 +52,29 @@ BLUE = (0, 0, 255)
 screen = pg.display.set_mode(size=SIZE)
 pg.display.set_caption("Monty Hall")
 
-# Loading images
+# Loading assets
 closedDoorImg = pg.image.load("Data/Assets/Images/closedDoor0.jpg")
 openedDoorImg = pg.image.load("Data/Assets/Images/openedDoor0.jpg")
+goatDoorImg = pg.image.load("Data/Assets/Images/GoatDoor0.jpg")
+carDoorImg = pg.image.load("Data/Assets/Images/CarDoor0.jpg")
+openDoorSound = pg.mixer.Sound("Data/Assets/Sounds/doorOpen0.wav")
+
 # resizing the images
 # closedDoorImgSize = closedDoorImg.get_rect().size  NOT NEEDED
 closedDoorImgSize = np.asarray((229, 394))
 openedDoorImgSize = np.asarray((229, 394))
+goatDoorImgSize = np.asarray((229, 394))
+carDoorImgSize = np.asarray((229, 394))
 # print(closedDoorImgSize)
 closedDoorImg = pg.transform.scale(closedDoorImg, closedDoorImgSize)
 openedDoorImg = pg.transform.scale(openedDoorImg, openedDoorImgSize)
+goatDoorImg = pg.transform.scale(goatDoorImg, goatDoorImgSize)
+carDoorImg = pg.transform.scale(carDoorImg, carDoorImgSize)
 
 door0 = Obj(150, 30, closedDoorImg, True)
 door1 = Obj(550, 30, closedDoorImg, True)
 door2 = Obj(950, 30, closedDoorImg, True)
-chosenDoor = False
+chosenDoor = [False, 0]
 
 doors = [False, True, False]
 random.shuffle(doors)
@@ -87,41 +96,84 @@ while True:
         if event.type == pg.MOUSEBUTTONDOWN:
             mousePos = pg.mouse.get_pos()
             # Check for the position of the mouse relative to the current game state and it's buttons
-            if chosenDoor:
+            if chosenDoor[0]:
                 # TODO: Add actual functionality to the buttons
                 # noinspection PyArgumentList,PyArgumentList
                 if pg.Rect.collidepoint(switchButton, mousePos):
                     print("Switch button pressed!")
                 elif pg.Rect.collidepoint(dontSwitchButton, mousePos):
+                    # Check for the clicking on the don't switch button, then check for which door was pressed,
+                    # and then check if the chosen door had the car or the goat
                     print("Don't switch button pressed")
+                    if chosenDoor[1] == 0:
+                        if doors[0]:
+                            door0.texture = carDoorImg
+                        elif doors[1]:
+                            door1.texture = carDoorImg
+                        elif doors[2]:
+                            door2.texture = carDoorImg
+                        else:
+                            print("Error")
+                    if chosenDoor[1] == 1:
+                        if doors[0]:
+                            door0.texture = carDoorImg
+                        elif doors[1]:
+                            door1.texture = carDoorImg
+                        elif doors[2]:
+                            door2.texture = carDoorImg
+                        else:
+                            print("Error")
+                    if chosenDoor[1] == 2:
+                        if doors[0]:
+                            door0.texture = carDoorImg
+                        elif doors[1]:
+                            door1.texture = carDoorImg
+                        elif doors[2]:
+                            door2.texture = carDoorImg
+                        else:
+                            print("Error")
+
+                    else:
+                        print("Error")
                 else:
                     pass
             else:
-                # TODO: Write buttons
                 # noinspection PyArgumentList,PyArgumentList,PyArgumentList
                 if pg.Rect.collidepoint(door0.Rect, mousePos):
+                    openDoorSound.play()
                     print("door 0 pressed")
+                    chosenDoor[1] = 0
                     if not doors[1]:
-                        door1.texture = openedDoorImg
+                        door1.texture = goatDoorImg
+                        chosenDoor[0] = True
                     else:
-                        door2.texture = openedDoorImg
+                        door2.texture = goatDoorImg
+                        chosenDoor[0] = True
                 elif pg.Rect.collidepoint(door1.Rect, mousePos):
+                    openDoorSound.play()
                     print("door 1 pressed")
+                    chosenDoor[1] = 1
                     if not doors[0]:
-                        door0.texture = openedDoorImg
+                        door0.texture = goatDoorImg
+                        chosenDoor[0] = True
                     else:
-                        door2.texture = openedDoorImg
+                        door2.texture = goatDoorImg
+                        chosenDoor[0] = True
                 elif pg.Rect.collidepoint(door2.Rect, mousePos):
+                    openDoorSound.play()
                     print("door 2 pressed")
+                    chosenDoor[1] = 2
                     if doors[1]:
-                        door1.texture = openedDoorImg
+                        door1.texture = goatDoorImg
+                        chosenDoor[0] = True
                     else:
-                        door2.texture = openedDoorImg
+                        door2.texture = goatDoorImg
+                        chosenDoor[0] = True
                 else:
                     pass
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_SPACE:
-                chosenDoor = not chosenDoor
+                chosenDoor[0] = not chosenDoor[0]
 
         # check if the event is the X button
         if event.type == pg.QUIT:
