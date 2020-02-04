@@ -39,6 +39,40 @@ class Obj:
         screen.blit(self.texture, (self.x, self.y))
 
 
+def finishRound():
+    # TODO: Add a scoreboard that measures the win/lose ratio, and display it to the screen
+    print(chosenDoor[1])
+    if chosenDoor[1] == 0:
+        if doors[0]:
+            door0.texture = carDoorImg
+        elif doors[1]:
+            door1.texture = carDoorImg
+        elif doors[2]:
+            door2.texture = carDoorImg
+        else:
+            print("Error0")
+    elif chosenDoor[1] == 1:
+        if doors[0]:
+            door0.texture = carDoorImg
+        elif doors[1]:
+            door1.texture = carDoorImg
+        elif doors[2]:
+            door2.texture = carDoorImg
+        else:
+            print("Error1")
+    elif chosenDoor[1] == 2:
+        if doors[0]:
+            door0.texture = carDoorImg
+        elif doors[1]:
+            door1.texture = carDoorImg
+        elif doors[2]:
+            door2.texture = carDoorImg
+        else:
+            print("Error2")
+    else:
+        print("Errorrrrr")
+
+
 # Defining constants
 WIDTH, HEIGHT = (1280, 720)
 SIZE = (WIDTH, HEIGHT)
@@ -97,109 +131,62 @@ while True:
             mousePos = pg.mouse.get_pos()
             # Check for the position of the mouse relative to the current game state and it's buttons
             if chosenDoor[0]:
-                # TODO: Add actual functionality to the buttons
                 # noinspection PyArgumentList,PyArgumentList
                 if pg.Rect.collidepoint(switchButton, mousePos):
                     # Check for the clicking on the switch button, then check for which door was pressed,
                     # and then check if the chosen door had the car or the goat
                     print("switch button pressed")
                     print(chosenDoor[1])
-                    if chosenDoor[1] == 0:
-                        if doors[0]:
-                            door0.texture = carDoorImg
-                        elif doors[1]:
-                            door1.texture = carDoorImg
-                        elif doors[2]:
-                            door2.texture = carDoorImg
-                        else:
-                            print("Error0")
-                    elif chosenDoor[1] == 1:
-                        if doors[0]:
-                            door0.texture = carDoorImg
-                        elif doors[1]:
-                            door1.texture = carDoorImg
-                        elif doors[2]:
-                            door2.texture = carDoorImg
-                        else:
-                            print("Error1")
-                    elif chosenDoor[1] == 2:
-                        if doors[0]:
-                            door0.texture = carDoorImg
-                        elif doors[1]:
-                            door1.texture = carDoorImg
-                        elif doors[2]:
-                            door2.texture = carDoorImg
-                        else:
-                            print("Error2")
-                    else:
-                        print("Errorrrrr")
+                    finishRound()
                 elif pg.Rect.collidepoint(dontSwitchButton, mousePos):
                     # Check for the clicking on the don't switch button, then check for which door was pressed,
                     # and then check if the chosen door had the car or the goat
                     print("Don't switch button pressed")
                     print(chosenDoor[1])
-                    if chosenDoor[1] == 0:
-                        if doors[0]:
-                            door0.texture = carDoorImg
-                        elif doors[1]:
-                            door1.texture = carDoorImg
-                        elif doors[2]:
-                            door2.texture = carDoorImg
-                        else:
-                            print("Error0")
-                    elif chosenDoor[1] == 1:
-                        if doors[0]:
-                            door0.texture = carDoorImg
-                        elif doors[1]:
-                            door1.texture = carDoorImg
-                        elif doors[2]:
-                            door2.texture = carDoorImg
-                        else:
-                            print("Error1")
-                    elif chosenDoor[1] == 2:
-                        if doors[0]:
-                            door0.texture = carDoorImg
-                        elif doors[1]:
-                            door1.texture = carDoorImg
-                        elif doors[2]:
-                            door2.texture = carDoorImg
-                        else:
-                            print("Error2")
-                    else:
-                        print("Errorrrrr")
+                    finishRound()
                 else:
                     pass
             else:
                 # noinspection PyArgumentList,PyArgumentList,PyArgumentList
                 if pg.Rect.collidepoint(door0.Rect, mousePos):
+                    # Check if door[0] was pressed
                     openDoorSound.play()
                     print("door 0 pressed")
                     chosenDoor[1] = 0
                     if not doors[1]:
+                        # check if doors[1] is a goat, if true then change it's texture and mark that the user chose
+                        # a door
                         door1.texture = goatDoorImg
                         chosenDoor[0] = True
                     else:
+                        # if doors[1] is a car, change the texture of door2 to the goat
                         door2.texture = goatDoorImg
                         chosenDoor[0] = True
                 elif pg.Rect.collidepoint(door1.Rect, mousePos):
+                    # check if door[1] was pressed
                     openDoorSound.play()
                     print("door 1 pressed")
                     chosenDoor[1] = 1
                     if not doors[0]:
+                        # check if doors[0] is a goat, if true change the texture of door0 to a goat.
                         door0.texture = goatDoorImg
                         chosenDoor[0] = True
                     else:
+                        # if doors[0] is a car, change the texture of door[2] to a goat.
                         door2.texture = goatDoorImg
                         chosenDoor[0] = True
                 elif pg.Rect.collidepoint(door2.Rect, mousePos):
                     openDoorSound.play()
                     print("door 2 pressed")
                     chosenDoor[1] = 2
-                    if doors[1]:
-                        door1.texture = goatDoorImg
+                    if not doors[0]:
+                        # check if doors[0] is a goat, if yes change the texture of the door1 to a goat, and mark that
+                        # the user has chosen a door.
+                        door0.texture = goatDoorImg
                         chosenDoor[0] = True
                     else:
-                        door2.texture = goatDoorImg
+                        # if doors[0] is a car, change door1 to a goat, and mark that the user had chosen a door
+                        door1.texture = goatDoorImg
                         chosenDoor[0] = True
                 else:
                     pass
